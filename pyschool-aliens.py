@@ -1,20 +1,26 @@
 import sys
 import pygame
 
+from settings import Configurador
+
 class Pyschool:
     """ Clase central donde correra el juego """
     def __init__(self):
         pygame.init()
-
+        
+        #Instancias
+        self.conf = Configurador()
         #Abre la pantalla
-        self.pantalla = pygame.display.set_mode((1200, 800))
+        self.pantalla = pygame.display.set_mode(
+            (self.conf.ancho_pant, self.conf.largo_pant))
+        
         pygame.display.set_caption("Hola Pyschool")
     
     def run_game(self):
         """ Corre un loop que correra el juego """
         while True:
             #Loop que observa eventos
-            for event in  pygame.event.get():
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
 
