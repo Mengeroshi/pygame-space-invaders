@@ -22,6 +22,7 @@ class Pyschool:
         """ Corre un loop que correra el juego """
         while True:
             self._check_events()
+            self.nave.refrescar()
             self._actulizar_pant()
 
             
@@ -31,6 +32,20 @@ class Pyschool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+
+            #keydowns
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    self.nave.mover_derecha = True
+                elif event.key == pygame.K_LEFT:
+                    self.nave.mover_izquierda = True
+
+            #Keyups
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    self.nave.mover_derecha = False
+                elif event.key == pygame.K_LEFT:
+                    self.nave.mover_izquierda = False
 
     def _actulizar_pant(self):
         """ Actualiza las imagenes y refresca la pantalla """
