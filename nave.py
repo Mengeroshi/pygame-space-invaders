@@ -13,6 +13,8 @@ class Nave:
         #Pone la nave enmedio de la parte inferior
         self.rect.midbottom = self.pant_rect.midbottom
 
+        self.x = float(self.rect.x)
+
         #Booleano de moviemiento
         self.mover_derecha = False
         self.mover_izquierda = False
@@ -23,8 +25,10 @@ class Nave:
     
     def refrescar(self):
         """ Actuliza el movimiento """
-        if self.mover_derecha:
-            self.rect.x += 1
+        if self.mover_derecha and self.rect.right < self.pant_rect.right:
+            self.x += 1
 
-        elif self.mover_izquierda:
-            self.rect.x -= 1
+        elif self.mover_izquierda and self.rect.left > 0 :
+            self.x -= 1
+
+        self.rect.x = self.x

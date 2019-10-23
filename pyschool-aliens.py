@@ -3,6 +3,7 @@ import pygame
 
 from settings import Configurador
 from nave import Nave
+from bala import Bala
 
 class Pyschool:
     """ Clase central donde correra el juego """
@@ -17,12 +18,14 @@ class Pyschool:
         pygame.display.set_caption("Hola Pyschool")
 
         self.nave = Nave(self)
+        self.balas = pygame.sprite.Group()
     
     def run_game(self):
         """ Corre un loop que correra el juego """
         while True:
             self._check_events()
             self.nave.refrescar()
+            self._balas_refrescar()
             self._actulizar_pant()
 
             
@@ -39,6 +42,8 @@ class Pyschool:
                     self.nave.mover_derecha = True
                 elif event.key == pygame.K_LEFT:
                     self.nave.mover_izquierda = True
+                elif event.key == pygame.K_SPACE:
+                    self._disparar()
 
             #Keyups
             elif event.type == pygame.KEYUP:
@@ -47,10 +52,24 @@ class Pyschool:
                 elif event.key == pygame.K_LEFT:
                     self.nave.mover_izquierda = False
 
+    def _disparar(self):
+        nueva_bala = Bala(self)
+        self.balas.add(nueva_bala)
+
+        for bala in self.balas.copy():
+            if bala.rect.bottom < 0:
+                self.balas.remove(bala)
+
+    def _balas_refrescar(self):
+        self.balas.update()
+
     def _actulizar_pant(self):
         """ Actualiza las imagenes y refresca la pantalla """
+        self.pantalla.fill(self.conf.fondo_color)
         #llama la nave
         self.nave.blitme()
+        for bala in self.balas.sprites():
+            bala.dibujar()
         #Refresca la pantalla
         pygame.display.flip()
 
