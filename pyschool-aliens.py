@@ -76,15 +76,26 @@ class Pyschool:
     
     def _crear_invasores(self):
         alien = Alien(self)
-        alien_ancho = alien.rect.width
+        alien_ancho, alien_alto = alien.rect.size
         espacio_disponible_x = self.conf.ancho_pant
         number_aliens_x = espacio_disponible_x // (2 * alien_ancho)
 
-        for alien_number in range(number_aliens_x):
-            alien = Alien(self)
-            alien.x = alien_ancho + 2 *alien_ancho * alien_number
-            alien.rect.x = alien.x
-            self.aliens.add(alien)
+        nave_alto = self.nave.rect.height
+        espacio_disponible_y = self.conf.largo_pant - (3*alien_alto) - nave_alto
+        num_filas = espacio_disponible_y // (2 * alien_alto)
+
+        for fila_num  in range(num_filas): 
+            for alien_number in range(number_aliens_x):
+                self._crear_alien(alien_number, fila_num)
+            
+    def _crear_alien(self, alien_number, fila_num):
+
+        alien = Alien(self)
+        alien_ancho, alien_alto = alien.rect.size
+        alien.x = alien_ancho + 2 *alien_ancho * alien_number
+        alien.rect.x = alien.x
+        alien.rect.y = alien_alto + 2 * alien_alto * fila_num
+        self.aliens.add(alien)
 
     def _actulizar_pant(self):
         """ Actualiza las imagenes y refresca la pantalla """
