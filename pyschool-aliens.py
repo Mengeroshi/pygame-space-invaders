@@ -4,6 +4,8 @@ import pygame
 from settings import Configurador
 from nave import Nave
 from bala import Bala
+from alien import Alien
+from time import sleep
 
 class Pyschool:
     """ Clase central donde correra el juego """
@@ -19,6 +21,9 @@ class Pyschool:
 
         self.nave = Nave(self)
         self.balas = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+    
+        self._crear_invasores()
     
     def run_game(self):
         """ Corre un loop que correra el juego """
@@ -59,10 +64,27 @@ class Pyschool:
 
     def _balas_refrescar(self):
         self.balas.update()
+        collisions =pygame.sprite.groupcollide(self.balas, self.aliens, True, True)
+        if not self.aliens:
+            sleep(1.0)
+            self.balas.empty()
+            self._crear_invasores() 
 
         for bala in self.balas.copy():
             if bala.rect.bottom <= 0:
                 self.balas.remove(bala)
+    
+    def _crear_invasores(self):
+        alien = Alien(self)
+        alien_ancho = alien.rect.width
+        espacio_disponible_x = self.conf.ancho_pant
+        number_aliens_x = espacio_disponible_x // (2 * alien_ancho)
+
+        for alien_number in range(number_aliens_x):
+            alien = Alien(self)
+            alien.x = alien_ancho + 2 *alien_ancho * alien_number
+            alien.rect.x = alien.x
+            self.aliens.add(alien)
 
     def _actulizar_pant(self):
         """ Actualiza las imagenes y refresca la pantalla """
@@ -71,6 +93,8 @@ class Pyschool:
         self.nave.blitme()
         for bala in self.balas.sprites():
             bala.dibujar()
+        #Aliens
+        self.aliens.draw(self.pantalla)
         #Refresca la pantalla
         pygame.display.flip()
 
