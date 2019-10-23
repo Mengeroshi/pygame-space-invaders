@@ -7,7 +7,7 @@ class Nave:
         self.pant_rect = space_invaders.pantalla.get_rect()
 
         #carga la imagen y su rectangulo
-        self.image = pygame.image.load("images/ship.bmp")
+        self.image = pygame.image.load("images/nave.bmp")
         self.rect = self.image.get_rect()
 
         #Pone la nave enmedio de la parte inferior
