@@ -53,15 +53,16 @@ class Pyschool:
                     self.nave.mover_izquierda = False
 
     def _disparar(self):
-        nueva_bala = Bala(self)
-        self.balas.add(nueva_bala)
-
-        for bala in self.balas.copy():
-            if bala.rect.bottom < 0:
-                self.balas.remove(bala)
+        if len(self.balas) < 3:
+            nueva_bala = Bala(self)
+            self.balas.add(nueva_bala)
 
     def _balas_refrescar(self):
         self.balas.update()
+
+        for bala in self.balas.copy():
+            if bala.rect.bottom <= 0:
+                self.balas.remove(bala)
 
     def _actulizar_pant(self):
         """ Actualiza las imagenes y refresca la pantalla """
